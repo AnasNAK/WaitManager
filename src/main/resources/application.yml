@@ -1,7 +1,27 @@
 spring:
-  application:
-    name:  .
+  config:
+    activate:
+      on-profile: ${SPRING_PROFILES_ACTIVE:dev}
   jpa:
     hibernate:
-      ddl-auto: create
-    show-sql: true
+      ddl-auto: create-drop
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: ${SPRING_DATASOURCE_DEV_URL:jdbc:mysql://mysql:3306/dev_db}
+    username: ${SPRING_DATASOURCE_DEV_USERNAME:root}
+    password: ${SPRING_DATASOURCE_DEV_PASSWORD:root_password}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${SPRING_DATASOURCE_PROD_URL:jdbc:mysql://mysql:3306/prod_db}
+    username: ${SPRING_DATASOURCE_PROD_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PROD_PASSWORD:root_password}

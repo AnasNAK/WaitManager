@@ -1,7 +1,0 @@
-spring:
-  profiles:
-    active: dev
-  datasource:
-    url: jdbc:mysql://mysql:3306/dev_db
-    username: root
-    password: root_password

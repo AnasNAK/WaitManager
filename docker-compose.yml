@@ -9,6 +9,11 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   app:
     build: .
@@ -18,11 +23,16 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_DATASOURCE_DEV_URL: ${SPRING_DATASOURCE_DEV_URL}
+      SPRING_DATASOURCE_DEV_USERNAME: ${SPRING_DATASOURCE_DEV_USERNAME}
+      SPRING_DATASOURCE_DEV_PASSWORD: ${SPRING_DATASOURCE_DEV_PASSWORD}
+      SPRING_DATASOURCE_PROD_URL: ${SPRING_DATASOURCE_PROD_URL}
+      SPRING_DATASOURCE_PROD_USERNAME: ${SPRING_DATASOURCE_PROD_USERNAME}
+      SPRING_DATASOURCE_PROD_PASSWORD: ${SPRING_DATASOURCE_PROD_PASSWORD}
     ports:
       - "8080:8080"
+    volumes:
+      - .:/app
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -30,10 +40,9 @@ services:
     environment:
       PMA_HOST: ${PMA_HOST}
       PMA_PORT: ${PMA_PORT}
-      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - "8081:80"
-
 
 volumes:
   mysql_data:

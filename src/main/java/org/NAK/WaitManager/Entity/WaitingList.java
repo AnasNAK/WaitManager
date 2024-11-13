@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "waitinList")
+@Table(name = "waitingList")
 public class WaitingList {
 
     @Id
@@ -32,8 +32,6 @@ public class WaitingList {
 
     @OneToMany(mappedBy = "waitingList" ,fetch = FetchType.EAGER)
     private Set<Visit> visits = new HashSet<>();
-
-
 
 
 
