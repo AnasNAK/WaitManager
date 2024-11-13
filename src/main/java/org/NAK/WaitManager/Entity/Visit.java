@@ -37,7 +37,6 @@ public class Visit {
     @Column(name = "estimatedProcessTime")
     private Integer estimatedProcessTime;
 
-
     @ManyToOne(cascade = CascadeType.ALL ,fetch = FetchType.EAGER)
     @MapsId("visitorId")
     private Visitor visitor;

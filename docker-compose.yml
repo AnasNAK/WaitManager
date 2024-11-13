@@ -1,11 +1,10 @@
-
 services:
   mysql:
     image: mysql:8
     container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: dev_db
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3306:3306"
     volumes:
@@ -15,9 +14,26 @@ services:
     build: .
     container_name: springboot-app
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    ports:
+      - "8080:8080"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-container
+    environment:
+      PMA_HOST: ${PMA_HOST}
+      PMA_PORT: ${PMA_PORT}
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "8081:80"
+
 
 volumes:
   mysql_data:
