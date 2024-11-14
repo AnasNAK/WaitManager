@@ -2,6 +2,7 @@ package org.NAK.WaitManager.Controller;
 
 import org.NAK.WaitManager.DTO.WaitingList.CreateWaitingListDTO;
 import org.NAK.WaitManager.DTO.WaitingList.ResponseWaitingListDTO;
+import org.NAK.WaitManager.DTO.WaitingList.UpdateWaitingListDTO;
 import org.NAK.WaitManager.Service.contract.WaitingListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +31,25 @@ private final WaitingListService waitingListService;
     ResponseWaitingListDTO createdWaitingList = waitingListService.saveWaitingList(createWaitingListDTO);
     return  ResponseEntity.ok(createdWaitingList);
 }
+
+@GetMapping("/{id}")
+    public ResponseEntity<ResponseWaitingListDTO> getWaitingListById(@PathVariable int id) {
+    ResponseWaitingListDTO waitingList = waitingListService.getWaitingList(id);
+    return  ResponseEntity.ok(waitingList);
+
+}
+
+@PutMapping("/{id}")
+    public ResponseEntity<ResponseWaitingListDTO> updateWaitingList(@PathVariable int id, @RequestBody UpdateWaitingListDTO updateWaitingListDTO) {
+    ResponseWaitingListDTO updatedWaitingList = waitingListService.updateWaitingList(id, updateWaitingListDTO);
+    return  ResponseEntity.ok(updatedWaitingList);
+
+}
+@DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteWaitingList(@PathVariable int id) {
+    waitingListService.deleteWaitingList(id);
+    return ResponseEntity.noContent().build();
+
+}
+
 }

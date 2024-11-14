@@ -1,5 +1,6 @@
 package org.NAK.WaitManager.Service.implementation;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.NAK.WaitManager.DTO.WaitingList.CreateWaitingListDTO;
 import org.NAK.WaitManager.DTO.WaitingList.ResponseWaitingListDTO;
 import org.NAK.WaitManager.DTO.WaitingList.UpdateWaitingListDTO;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WaitingListServiceImpl implements WaitingListService {
@@ -37,21 +39,33 @@ public class WaitingListServiceImpl implements WaitingListService {
 
     @Override
     public ResponseWaitingListDTO getWaitingList(long id) {
-        return null;
+        return waitingListRepository.findById(id)
+                .map(waitingListMapper::toResponseWaitingListDTO)
+                .orElseThrow(() -> new EntityNotFoundException("WaitingList"+ id));
     }
 
     @Override
     public ResponseWaitingListDTO updateWaitingList(long id, UpdateWaitingListDTO updateWaitingListDTO) {
-        return null;
+
+        WaitingList existedWaitingList = waitingListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("WaitingList"+ id));
+        WaitingList waitingList = waitingListMapper.toWaitingList(updateWaitingListDTO);
+        waitingList.setId(existedWaitingList.getId());
+        return waitingListMapper.toResponseWaitingListDTO(waitingList);
     }
 
     @Override
     public void deleteWaitingList(long id) {
-
+        if (waitingListRepository.existsById(id)) {
+            throw new EntityNotFoundException("WaitingList"+ id);
+        }
+        waitingListRepository.deleteById(id);
     }
 
     @Override
     public List<ResponseWaitingListDTO> getWaitingLists() {
-        return List.of();
+        return waitingListRepository.findAll()
+                .stream()
+                .map(waitingListMapper::toResponseWaitingListDTO)
+                .collect(Collectors.toList());
     }
 }
