@@ -6,10 +6,9 @@ import org.NAK.WaitManager.DTO.Visitor.ResponseVisitorDTO;
 import org.NAK.WaitManager.Service.contract.VisitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/visitors")
@@ -28,4 +27,18 @@ public class VisitorController {
         return ResponseEntity.ok(visitor);
 
     }
+
+    @GetMapping
+    public List<ResponseVisitorDTO> getAllVisits() {
+        return visitorService.getVisitors();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseVisitorDTO> getVisitById(@PathVariable("id") Long id) {
+        ResponseVisitorDTO visitorDTO = visitorService.getVisitor(id);
+        return ResponseEntity.ok(visitorDTO);
+    }
+
+    @PutMapping("/{id}")
+    public
 }

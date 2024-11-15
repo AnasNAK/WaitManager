@@ -1,5 +1,6 @@
 package org.NAK.WaitManager.Service.implementation;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.persistence.EntityNotFoundException;
 import org.NAK.WaitManager.DTO.WaitingList.CreateWaitingListDTO;
 import org.NAK.WaitManager.DTO.WaitingList.ResponseWaitingListDTO;
@@ -9,6 +10,7 @@ import org.NAK.WaitManager.Mapper.WaitingListMapper;
 import org.NAK.WaitManager.Repository.WaitingListRepository;
 import org.NAK.WaitManager.Service.contract.WaitingListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,13 @@ public class WaitingListServiceImpl implements WaitingListService {
 
     private final WaitingListMapper waitingListMapper;
 
+    @Value("${DEFAULT_ALGORITHM}")
+    private String defaultAlgorithm;
+
+    @Value("${DEFAULT_CAPACITY}")
+    private Integer defaultCapacity;
+
+
     @Autowired
     public WaitingListServiceImpl(WaitingListRepository waitingListRepository, WaitingListMapper waitingListMapper) {
         this.waitingListRepository = waitingListRepository;
@@ -32,6 +41,7 @@ public class WaitingListServiceImpl implements WaitingListService {
     public ResponseWaitingListDTO saveWaitingList(CreateWaitingListDTO createWaitingListDTO) {
 
         WaitingList waitingList = waitingListMapper.toWaitingList(createWaitingListDTO);
+        validationAlgoAndCap(waitingList);
         WaitingList savedWaitingList = waitingListRepository.save(waitingList);
         return waitingListMapper.toResponseWaitingListDTO(savedWaitingList);
 
@@ -50,17 +60,19 @@ public class WaitingListServiceImpl implements WaitingListService {
         WaitingList existedWaitingList = waitingListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("WaitingList"+ id));
         WaitingList waitingList = waitingListMapper.toWaitingList(updateWaitingListDTO);
         waitingList.setId(existedWaitingList.getId());
+        validationAlgoAndCap(waitingList);
         waitingListRepository.save(waitingList);
         return waitingListMapper.toResponseWaitingListDTO(waitingList);
     }
 
     @Override
     public void deleteWaitingList(long id) {
-        if (waitingListRepository.existsById(id)) {
-            throw new EntityNotFoundException("WaitingList"+ id);
+        if (!waitingListRepository.existsById(id)) {
+            throw new EntityNotFoundException("WaitingList with ID " + id + " not found");
         }
         waitingListRepository.deleteById(id);
     }
+
 
     @Override
     public List<ResponseWaitingListDTO> getWaitingLists() {
@@ -68,5 +80,18 @@ public class WaitingListServiceImpl implements WaitingListService {
                 .stream()
                 .map(waitingListMapper::toResponseWaitingListDTO)
                 .collect(Collectors.toList());
+    }
+
+
+    private WaitingList validationAlgoAndCap(WaitingList waitingList){
+
+        if (waitingList.getAlgorithm() == null) {
+            waitingList.setAlgorithm(defaultAlgorithm);
+        }
+        if (waitingList.getCapacity() == null) {
+            waitingList.setCapacity(defaultCapacity);
+        }
+
+        return waitingList;
     }
 }

@@ -46,7 +46,7 @@ private final WaitingListService waitingListService;
 
 }
 @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWaitingList(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteWaitingList(@PathVariable("id") Long id) {
     waitingListService.deleteWaitingList(id);
     return ResponseEntity.noContent().build();
 
