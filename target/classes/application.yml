@@ -1,0 +1,47 @@
+spring:
+  config:
+    activate:
+      on-profile: ${SPRING_PROFILES_ACTIVE:dev}
+
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/dev_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/prod_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: none
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/test_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update

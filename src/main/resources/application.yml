@@ -3,28 +3,45 @@ spring:
     activate:
       on-profile: ${SPRING_PROFILES_ACTIVE:dev}
 
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
 
 ---
+
 spring:
   config:
     activate:
       on-profile: dev
 
   datasource:
-    url: ${SPRING_DATASOURCE_DEV_URL:jdbc:mysql://mysql-dev:3306/dev_db}
-    username: ${SPRING_DATASOURCE_DEV_USERNAME:root}
-    password: ${SPRING_DATASOURCE_DEV_PASSWORD:root_password}
+    url: jdbc:mysql://mysql:3306/dev_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
 
 ---
+
 spring:
   config:
     activate:
       on-profile: prod
 
   datasource:
-    url: ${SPRING_DATASOURCE_PROD_URL:jdbc:mysql://mysql-prod:3306/prod_db}
-    username: ${SPRING_DATASOURCE_PROD_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PROD_PASSWORD:root_password}
+    url: jdbc:mysql://mysql:3306/prod_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: none
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/test_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update

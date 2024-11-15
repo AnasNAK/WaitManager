@@ -2,9 +2,7 @@ package org.NAK.WaitManager.Entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -32,7 +30,6 @@ public class WaitingList {
 
     @OneToMany(mappedBy = "waitingList" ,fetch = FetchType.EAGER)
     private Set<Visit> visits = new HashSet<>();
-
 
 
 }

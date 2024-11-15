@@ -1,9 +1,7 @@
 package org.NAK.WaitManager.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.NAK.WaitManager.Entity.Embeded.EmbeddedIds;
 import org.NAK.WaitManager.Enum.Status;
 

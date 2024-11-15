@@ -1,16 +1,9 @@
-FROM openjdk:21-slim AS build
 
-RUN apt-get update && apt-get install -y maven && apt-get clean
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
 
-RUN mvn clean package -DskipTests
+EXPOSE 8080
 
-FROM openjdk:21-jdk-slim
-
-COPY --from=build /app/target/*.jar app.jar
-
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "WaitManager-0.0.1-SNAPSHOT.jar"]

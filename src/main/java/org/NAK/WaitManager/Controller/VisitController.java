@@ -21,10 +21,6 @@ public class VisitController {
         this.visitorService = visitorService;
     }
 
-    @PostMapping
-    public ResponseEntity<CreateVisitDTO> createVisit(@RequestBody CreateVisitDTO createVisitDTO) {
-        ResponseVisitorDTO visitor = visitorService.saveVisitor(createVisitDTO);
 
-    }
 
 }

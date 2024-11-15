@@ -33,20 +33,20 @@ private final WaitingListService waitingListService;
 }
 
 @GetMapping("/{id}")
-    public ResponseEntity<ResponseWaitingListDTO> getWaitingListById(@PathVariable int id) {
+    public ResponseEntity<ResponseWaitingListDTO> getWaitingListById(@PathVariable Long id) {
     ResponseWaitingListDTO waitingList = waitingListService.getWaitingList(id);
     return  ResponseEntity.ok(waitingList);
 
 }
 
 @PutMapping("/{id}")
-    public ResponseEntity<ResponseWaitingListDTO> updateWaitingList(@PathVariable int id, @RequestBody UpdateWaitingListDTO updateWaitingListDTO) {
-    ResponseWaitingListDTO updatedWaitingList = waitingListService.updateWaitingList(id, updateWaitingListDTO);
+    public ResponseEntity<ResponseWaitingListDTO> updateWaitingList(@PathVariable Long id, @RequestBody UpdateWaitingListDTO updateWaitingListDTO) {
+    ResponseWaitingListDTO updatedWaitingList = waitingListService.updateWaitingList(updateWaitingListDTO,id);
     return  ResponseEntity.ok(updatedWaitingList);
 
 }
 @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWaitingList(@PathVariable int id) {
+    public ResponseEntity<Void> deleteWaitingList(@PathVariable Long id) {
     waitingListService.deleteWaitingList(id);
     return ResponseEntity.noContent().build();
 

@@ -10,7 +10,7 @@ public interface WaitingListService {
 
     ResponseWaitingListDTO saveWaitingList (CreateWaitingListDTO createWaitingListDTO);
     ResponseWaitingListDTO getWaitingList (long id);
-    ResponseWaitingListDTO updateWaitingList (long id, UpdateWaitingListDTO updateWaitingListDTO);
+    ResponseWaitingListDTO updateWaitingList (UpdateWaitingListDTO updateWaitingListDTO ,long id);
     void deleteWaitingList (long id);
     List<ResponseWaitingListDTO> getWaitingLists();
 }

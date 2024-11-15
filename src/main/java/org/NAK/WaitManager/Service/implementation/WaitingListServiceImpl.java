@@ -45,11 +45,12 @@ public class WaitingListServiceImpl implements WaitingListService {
     }
 
     @Override
-    public ResponseWaitingListDTO updateWaitingList(long id, UpdateWaitingListDTO updateWaitingListDTO) {
+    public ResponseWaitingListDTO updateWaitingList( UpdateWaitingListDTO updateWaitingListDTO ,long id) {
 
         WaitingList existedWaitingList = waitingListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("WaitingList"+ id));
         WaitingList waitingList = waitingListMapper.toWaitingList(updateWaitingListDTO);
         waitingList.setId(existedWaitingList.getId());
+        waitingListRepository.save(waitingList);
         return waitingListMapper.toResponseWaitingListDTO(waitingList);
     }
 
