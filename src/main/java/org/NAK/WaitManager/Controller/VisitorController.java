@@ -39,6 +39,5 @@ public class VisitorController {
         return ResponseEntity.ok(visitorDTO);
     }
 
-    @PutMapping("/{id}")
-    public
+
 }
