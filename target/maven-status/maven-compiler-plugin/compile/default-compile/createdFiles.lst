@@ -21,7 +21,9 @@ org\NAK\WaitManager\Service\implementation\WaitingListServiceImpl.class
 org\NAK\WaitManager\Controller\WaitingListController.class
 org\NAK\WaitManager\Controller\VisitorController.class
 org\NAK\WaitManager\Entity\Visit.class
+org\NAK\WaitManager\DTO\ErrorResponseDTO.class
 org\NAK\WaitManager\Entity\Embeded\EmbeddedIds.class
+org\NAK\WaitManager\Exception\GlobalExceptionHandler.class
 org\NAK\WaitManager\Mapper\WaitingListMapperImpl.class
 org\NAK\WaitManager\Entity\WaitingList.class
 org\NAK\WaitManager\Service\implementation\VisitorServiceImpl.class

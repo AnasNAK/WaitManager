@@ -17,4 +17,6 @@ public class ResponseWaitingListSharedDTO {
     private String algorithm;
 
     private Integer capacity;
+
+
 }

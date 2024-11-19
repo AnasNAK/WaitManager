@@ -6,6 +6,7 @@ import org.NAK.WaitManager.Entity.Embeded.EmbeddedIds;
 import org.NAK.WaitManager.Enum.Status;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -17,14 +18,14 @@ public class Visit {
     @EmbeddedId
     private EmbeddedIds embeddedIds;
 
-    @Column
-    private LocalDate arrivalTime;
+    @Column(name = "arrivalTime")
+    private LocalDateTime arrivalTime;
 
     @Column(name = "startTime")
-    private LocalDate startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "endTime")
-    private LocalDate endTime;
+    private LocalDateTime endTime;
 
     @Column(name = "status")
     private Status status;

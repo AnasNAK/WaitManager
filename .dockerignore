@@ -1,7 +1,7 @@
 # Ignore IDE files
 .idea/
 *.iml
-*.mvn
+
 
 # Ignore log files
 *.log
@@ -16,3 +16,6 @@
 
 # Ignore any other files or directories you don't need in the image
 *.class
+
+!pom.xml
+!/.mvn/

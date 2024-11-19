@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,7 +30,7 @@ public class WaitingList {
     private Integer capacity;
 
     @OneToMany(mappedBy = "waitingList" ,fetch = FetchType.EAGER)
-    private Set<Visit> visits = new HashSet<>();
+    private List<Visit> visits ;
 
 
 }

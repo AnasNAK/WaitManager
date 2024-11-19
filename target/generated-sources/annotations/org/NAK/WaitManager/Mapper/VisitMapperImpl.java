@@ -4,12 +4,13 @@ import javax.annotation.processing.Generated;
 import org.NAK.WaitManager.DTO.Visit.CreateVisitDTO;
 import org.NAK.WaitManager.DTO.Visit.ResponseVisitDTO;
 import org.NAK.WaitManager.DTO.Visit.UpdateVisitDTO;
+import org.NAK.WaitManager.Entity.Embeded.EmbeddedIds;
 import org.NAK.WaitManager.Entity.Visit;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-18T16:41:15+0100",
+    date = "2024-11-19T07:51:40+0100",
     comments = "version: 1.6.2, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
 )
 @Component
@@ -23,6 +24,8 @@ public class VisitMapperImpl implements VisitMapper {
 
         Visit visit = new Visit();
 
+        visit.setEmbeddedIds( createVisitDTOToEmbeddedIds( createVisitDTO ) );
+        visit.setArrivalTime( createVisitDTO.getArrivalTime() );
         visit.setStartTime( createVisitDTO.getStartTime() );
         visit.setEndTime( createVisitDTO.getEndTime() );
         visit.setStatus( createVisitDTO.getStatus() );
@@ -40,6 +43,14 @@ public class VisitMapperImpl implements VisitMapper {
 
         Visit visit = new Visit();
 
+        visit.setEmbeddedIds( updateVisitDTOToEmbeddedIds( updateVisitDTO ) );
+        visit.setArrivalTime( updateVisitDTO.getArrivalTime() );
+        visit.setStartTime( updateVisitDTO.getStartTime() );
+        visit.setEndTime( updateVisitDTO.getEndTime() );
+        visit.setStatus( updateVisitDTO.getStatus() );
+        visit.setPriority( updateVisitDTO.getPriority() );
+        visit.setEstimatedProcessTime( updateVisitDTO.getEstimatedProcessTime() );
+
         return visit;
     }
 
@@ -51,6 +62,9 @@ public class VisitMapperImpl implements VisitMapper {
 
         ResponseVisitDTO responseVisitDTO = new ResponseVisitDTO();
 
+        responseVisitDTO.setVisitorId( visitEmbeddedIdsVisitorId( visit ) );
+        responseVisitDTO.setWaitingListId( visitEmbeddedIdsWaitingListId( visit ) );
+        responseVisitDTO.setArrivalTime( visit.getArrivalTime() );
         responseVisitDTO.setStartTime( visit.getStartTime() );
         responseVisitDTO.setEndTime( visit.getEndTime() );
         responseVisitDTO.setStatus( visit.getStatus() );
@@ -58,5 +72,47 @@ public class VisitMapperImpl implements VisitMapper {
         responseVisitDTO.setEstimatedProcessTime( visit.getEstimatedProcessTime() );
 
         return responseVisitDTO;
+    }
+
+    protected EmbeddedIds createVisitDTOToEmbeddedIds(CreateVisitDTO createVisitDTO) {
+        if ( createVisitDTO == null ) {
+            return null;
+        }
+
+        EmbeddedIds embeddedIds = new EmbeddedIds();
+
+        embeddedIds.setVisitorId( createVisitDTO.getVisitorId() );
+        embeddedIds.setWaitingListId( createVisitDTO.getWaitingListId() );
+
+        return embeddedIds;
+    }
+
+    protected EmbeddedIds updateVisitDTOToEmbeddedIds(UpdateVisitDTO updateVisitDTO) {
+        if ( updateVisitDTO == null ) {
+            return null;
+        }
+
+        EmbeddedIds embeddedIds = new EmbeddedIds();
+
+        embeddedIds.setVisitorId( updateVisitDTO.getVisitorId() );
+        embeddedIds.setWaitingListId( updateVisitDTO.getWaitingListId() );
+
+        return embeddedIds;
+    }
+
+    private Long visitEmbeddedIdsVisitorId(Visit visit) {
+        EmbeddedIds embeddedIds = visit.getEmbeddedIds();
+        if ( embeddedIds == null ) {
+            return null;
+        }
+        return embeddedIds.getVisitorId();
+    }
+
+    private Long visitEmbeddedIdsWaitingListId(Visit visit) {
+        EmbeddedIds embeddedIds = visit.getEmbeddedIds();
+        if ( embeddedIds == null ) {
+            return null;
+        }
+        return embeddedIds.getWaitingListId();
     }
 }

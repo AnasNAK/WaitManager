@@ -11,4 +11,6 @@ public class ResponseVisitorSharedDTO {
     private Long id;
     private String firstName;
     private String lastName;
+
+
 }

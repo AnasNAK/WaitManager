@@ -37,7 +37,7 @@ public class VisitorServiceImpl implements VisitorService {
     @Override
     public ResponseVisitorDTO updateVisitor(Long id, UpdateVisitorDTO updateVisitorDTO) {
 
-        Visitor existedVisitor = visitorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Visitor"+ id));
+        Visitor existedVisitor = visitorRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Visitor with id :"+ id + "not found"));
         Visitor updatedVisitor = visitorMapper.toVisitor(updateVisitorDTO);
         updatedVisitor.setId(existedVisitor.getId());
         visitorRepository.save(updatedVisitor);
@@ -48,13 +48,13 @@ public class VisitorServiceImpl implements VisitorService {
     public ResponseVisitorDTO getVisitor(Long id) {
         return visitorRepository.findById(id)
                 .map(visitorMapper::toResponseVisitorDTO)
-                .orElseThrow(() -> new EntityNotFoundException("Visitor"+ id));
+                .orElseThrow(() -> new EntityNotFoundException("Visitor with id :"+ id + "not found"));
     }
 
     @Override
     public void deleteVisitor(Long id) {
         if (!visitorRepository.existsById(id)) {
-            throw new EntityNotFoundException("Visitor"+ id);
+            throw new EntityNotFoundException("Visitor with id :"+ id + "not found");
         }
         visitorRepository.deleteById(id);
     }

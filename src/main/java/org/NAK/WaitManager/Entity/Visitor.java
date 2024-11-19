@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,7 +24,7 @@ public class Visitor {
     private String lastName;
 
     @OneToMany(mappedBy = "visitor",fetch = FetchType.EAGER)
-    private Set<Visit> visits = new HashSet<>();
+    private List<Visit> visits ;
 
 
 }

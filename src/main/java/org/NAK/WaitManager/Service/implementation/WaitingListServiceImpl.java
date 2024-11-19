@@ -1,6 +1,6 @@
 package org.NAK.WaitManager.Service.implementation;
 
-import io.github.cdimascio.dotenv.Dotenv;
+
 import jakarta.persistence.EntityNotFoundException;
 import org.NAK.WaitManager.DTO.WaitingList.CreateWaitingListDTO;
 import org.NAK.WaitManager.DTO.WaitingList.ResponseWaitingListDTO;
@@ -51,13 +51,13 @@ public class WaitingListServiceImpl implements WaitingListService {
     public ResponseWaitingListDTO getWaitingList(long id) {
         return waitingListRepository.findById(id)
                 .map(waitingListMapper::toResponseWaitingListDTO)
-                .orElseThrow(() -> new EntityNotFoundException("WaitingList"+ id));
+                .orElseThrow(() -> new EntityNotFoundException("WaitingList with id :"+ id + "not found"));
     }
 
     @Override
     public ResponseWaitingListDTO updateWaitingList( UpdateWaitingListDTO updateWaitingListDTO ,long id) {
 
-        WaitingList existedWaitingList = waitingListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("WaitingList"+ id));
+        WaitingList existedWaitingList = waitingListRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("WaitingList with id :"+ id + "not found"));
         WaitingList waitingList = waitingListMapper.toWaitingList(updateWaitingListDTO);
         waitingList.setId(existedWaitingList.getId());
         validationAlgoAndCap(waitingList);
