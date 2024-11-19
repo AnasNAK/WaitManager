@@ -14,5 +14,6 @@ public interface VisitRepository extends JpaRepository<Visit, EmbeddedIds> {
     List<Visit> findByWaitingListId(long waitingListId);
     long countByWaitingListId(Long waitingListId);
 
+    List<Visit> findByWaitingListId(Long waitingListId);
 }
 

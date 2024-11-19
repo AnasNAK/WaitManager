@@ -5,6 +5,7 @@ org\NAK\WaitManager\Util\Algorithm.class
 org\NAK\WaitManager\Mapper\VisitorMapper.class
 org\NAK\WaitManager\DTO\WaitingList\CreateWaitingListDTO.class
 org\NAK\WaitManager\Service\contract\VisitService.class
+org\NAK\WaitManager\Controller\PerformanceController.class
 org\NAK\WaitManager\Mapper\VisitMapperImpl.class
 org\NAK\WaitManager\DTO\WaitingList\ResponseWaitingListDTO.class
 org\NAK\WaitManager\DTO\WaitingList\ResponseWaitingListSharedDTO.class

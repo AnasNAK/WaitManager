@@ -4,14 +4,18 @@ import javax.annotation.processing.Generated;
 import org.NAK.WaitManager.DTO.Visit.CreateVisitDTO;
 import org.NAK.WaitManager.DTO.Visit.ResponseVisitDTO;
 import org.NAK.WaitManager.DTO.Visit.UpdateVisitDTO;
+import org.NAK.WaitManager.DTO.Visitor.ResponseVisitorSharedDTO;
+import org.NAK.WaitManager.DTO.WaitingList.ResponseWaitingListSharedDTO;
 import org.NAK.WaitManager.Entity.Embeded.EmbeddedIds;
 import org.NAK.WaitManager.Entity.Visit;
+import org.NAK.WaitManager.Entity.Visitor;
+import org.NAK.WaitManager.Entity.WaitingList;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-19T07:51:40+0100",
-    comments = "version: 1.6.2, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
+    date = "2024-11-19T11:34:10+0100",
+    comments = "version: 1.6.2, compiler: javac, environment: Java 23 (Oracle Corporation)"
 )
 @Component
 public class VisitMapperImpl implements VisitMapper {
@@ -62,8 +66,8 @@ public class VisitMapperImpl implements VisitMapper {
 
         ResponseVisitDTO responseVisitDTO = new ResponseVisitDTO();
 
-        responseVisitDTO.setVisitorId( visitEmbeddedIdsVisitorId( visit ) );
-        responseVisitDTO.setWaitingListId( visitEmbeddedIdsWaitingListId( visit ) );
+        responseVisitDTO.setVisitor( visitorToResponseVisitorSharedDTO( visit.getVisitor() ) );
+        responseVisitDTO.setWaitingList( waitingListToResponseWaitingListSharedDTO( visit.getWaitingList() ) );
         responseVisitDTO.setArrivalTime( visit.getArrivalTime() );
         responseVisitDTO.setStartTime( visit.getStartTime() );
         responseVisitDTO.setEndTime( visit.getEndTime() );
@@ -100,19 +104,32 @@ public class VisitMapperImpl implements VisitMapper {
         return embeddedIds;
     }
 
-    private Long visitEmbeddedIdsVisitorId(Visit visit) {
-        EmbeddedIds embeddedIds = visit.getEmbeddedIds();
-        if ( embeddedIds == null ) {
+    protected ResponseVisitorSharedDTO visitorToResponseVisitorSharedDTO(Visitor visitor) {
+        if ( visitor == null ) {
             return null;
         }
-        return embeddedIds.getVisitorId();
+
+        ResponseVisitorSharedDTO responseVisitorSharedDTO = new ResponseVisitorSharedDTO();
+
+        responseVisitorSharedDTO.setId( visitor.getId() );
+        responseVisitorSharedDTO.setFirstName( visitor.getFirstName() );
+        responseVisitorSharedDTO.setLastName( visitor.getLastName() );
+
+        return responseVisitorSharedDTO;
     }
 
-    private Long visitEmbeddedIdsWaitingListId(Visit visit) {
-        EmbeddedIds embeddedIds = visit.getEmbeddedIds();
-        if ( embeddedIds == null ) {
+    protected ResponseWaitingListSharedDTO waitingListToResponseWaitingListSharedDTO(WaitingList waitingList) {
+        if ( waitingList == null ) {
             return null;
         }
-        return embeddedIds.getWaitingListId();
+
+        ResponseWaitingListSharedDTO responseWaitingListSharedDTO = new ResponseWaitingListSharedDTO();
+
+        responseWaitingListSharedDTO.setId( waitingList.getId() );
+        responseWaitingListSharedDTO.setDate( waitingList.getDate() );
+        responseWaitingListSharedDTO.setAlgorithm( waitingList.getAlgorithm() );
+        responseWaitingListSharedDTO.setCapacity( waitingList.getCapacity() );
+
+        return responseWaitingListSharedDTO;
     }
 }

@@ -1,6 +1,5 @@
 package org.NAK.WaitManager.Mapper;
 
-
 import org.NAK.WaitManager.DTO.Visit.CreateVisitDTO;
 import org.NAK.WaitManager.DTO.Visit.ResponseVisitDTO;
 import org.NAK.WaitManager.DTO.Visit.UpdateVisitDTO;
@@ -8,7 +7,7 @@ import org.NAK.WaitManager.Entity.Visit;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {VisitorMapper.class, WaitingListMapper.class})
 public interface VisitMapper {
 
     @Mapping(target = "embeddedIds.visitorId", source = "visitorId")
@@ -19,9 +18,7 @@ public interface VisitMapper {
     @Mapping(target = "embeddedIds.waitingListId", source = "waitingListId")
     Visit toVisit(UpdateVisitDTO updateVisitDTO);
 
-    @Mapping(target = "visitorId", source = "embeddedIds.visitorId")
-    @Mapping(target = "waitingListId", source = "embeddedIds.waitingListId")
+    @Mapping(target = "visitor", source = "visitor")
+    @Mapping(target = "waitingList", source = "waitingList")
     ResponseVisitDTO toResponseVisitDTO(Visit visit);
 }
-
-

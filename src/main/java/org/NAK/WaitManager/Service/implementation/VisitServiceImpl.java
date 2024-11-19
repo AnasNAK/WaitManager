@@ -8,6 +8,7 @@ import org.NAK.WaitManager.Entity.Embeded.EmbeddedIds;
 import org.NAK.WaitManager.Entity.Visit;
 import org.NAK.WaitManager.Entity.Visitor;
 import org.NAK.WaitManager.Entity.WaitingList;
+import org.NAK.WaitManager.Enum.Status;
 import org.NAK.WaitManager.Mapper.VisitMapper;
 import org.NAK.WaitManager.Repository.VisitRepository;
 import org.NAK.WaitManager.Repository.VisitorRepository;
@@ -16,7 +17,11 @@ import org.NAK.WaitManager.Service.contract.VisitService;
 import org.NAK.WaitManager.Util.Algorithm;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -126,4 +131,58 @@ public class VisitServiceImpl implements VisitService {
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public double calculateAverageWaitingTime(Long waitingListId){
+        List<Visit> visits = visitRepository.findByWaitingListId(waitingListId);
+        if (visits.isEmpty()) return 0;
+
+        double totalWaitingTime = visits.stream()
+                .filter(visit -> visit.getStatus() != Status.CANCELLED)
+                .mapToLong(visit -> Duration.between(visit.getArrivalTime(),visit.getStartTime()).toMinutes())
+                        .sum();
+
+        return totalWaitingTime / visits.size();
+    }
+
+    @Override
+    public long calculateVisitorRotation(Long waitingListId){
+        List<Visit> visits = visitRepository.findByWaitingListId(waitingListId);
+
+        Set<Long> uniqueVisitor  = visits.stream()
+                .filter(visit -> visit.getStatus() == Status.FINISHED || visit.getStatus() == Status.CANCELLED)
+                .map(visit -> visit.getEmbeddedIds().getVisitorId())
+                .collect(Collectors.toSet());
+
+        return uniqueVisitor.size();
+    }
+
+    @Override
+    public Map<Status,Long>  calculateVisitorStatusDistribution(Long waitingListId){
+        List<Visit> visits = visitRepository.findByWaitingListId(waitingListId);
+        return  visits.stream()
+                .collect(Collectors.groupingBy(Visit::getStatus, Collectors.counting()));
+
+    }
+    @Override
+    public double calculateSatisfactionRateForWaitingList(Long waitingListId) {
+        List<Visit> visits = visitRepository.findByWaitingListId(waitingListId);
+        if (visits.isEmpty()) return 0;
+
+        long successfulVisits = visits.stream()
+                .filter(visit -> visit.getStatus() == Status.FINISHED)
+                .count();
+
+        return (double) successfulVisits / visits.size() * 100;
+    }
+
+    @Override
+    public Map<String,Double> generatePerformanceIndicators(Long waitingListId){
+        Map<String,Double> performanceIndicators = new HashMap<>();
+        performanceIndicators.put("Satisfaction Rate", calculateSatisfactionRateForWaitingList(waitingListId));
+        performanceIndicators.put("Average Waiting Time", calculateAverageWaitingTime(waitingListId));
+        performanceIndicators.put("Visitor Rotation",(double) calculateVisitorRotation(waitingListId));
+
+        return performanceIndicators;
+    }
 }
